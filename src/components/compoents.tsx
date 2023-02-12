@@ -44,3 +44,16 @@ export const Button = styled.button`
     opacity: 1;
   }
 `;
+
+export const RouletteTitle = styled.input`
+  margin: 25px;
+  font-size: 46px;
+  border: none;
+  display: block;
+  background-color: #242424;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+  }
+`;
