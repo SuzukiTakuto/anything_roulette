@@ -27,8 +27,6 @@ export const Register = () => {
     });
   };
 
-  test();
-
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (value) => {
     const newTitle = value.target.value;
     setRouletteTitle(newTitle);
