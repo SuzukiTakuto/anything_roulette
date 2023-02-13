@@ -2,8 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { RouletteTitle, Form } from '../components/compoents';
 import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase';
-import { Container } from '../components/compoents';
+import { auth, db } from '../firebase';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 export const Register = () => {
   console.log('s');
@@ -19,6 +19,15 @@ export const Register = () => {
       setUser(currentUser);
     });
   }, []);
+
+  const test = async () => {
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data());
+    });
+  };
+
+  test();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (value) => {
     const newTitle = value.target.value;
