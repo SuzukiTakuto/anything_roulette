@@ -4,19 +4,32 @@ import { RouletteTitle, Form } from '../components/compoents';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { RouletteOfUser } from '../type';
+import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
-  console.log('s');
   const [rouletteItems, setRouletteItems] = useState<String[]>([]);
   const [rouletteTitle, setRouletteTitle] = useState<
     string | number | readonly string[] | undefined
   >('名称未設定');
   const [user, setUser] = useState<User | null>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  const rouletteData: RouletteOfUser = {
+    email: '',
+    rouletteSets: [
+      {
+        items: [''],
+        title: '',
+      },
+    ],
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser?.email) rouletteData.email = currentUser?.email;
     });
   }, []);
 
@@ -38,6 +51,12 @@ export const Register = () => {
       setRouletteItems([...rouletteItems, inputRef.current.value]);
       inputRef.current.value = '';
     }
+  };
+
+  const handleRegister = () => {
+    rouletteData.rouletteSets.push({ items: rouletteItems, title: rouletteTitle });
+
+    navigate('/roulette');
   };
 
   return (

@@ -4,3 +4,13 @@ export type UserContext = {
     user: User | null,
     setUser: React.Dispatch<React.SetStateAction<User | null>>
 }
+
+export type RouletteOfUser = {
+    email: string,
+    rouletteSets: Roulette[]
+}
+
+export type Roulette = {
+    items: String[],
+    title: string | number | readonly string[] | undefined
+}
