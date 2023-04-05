@@ -27,7 +27,7 @@ export const Register = () => {
         querySnapshot.forEach((doc) => {
           if (doc.id === currentUser?.uid) {
             setPreRouletteData(doc.data().rouletteSets);
-            console.log(preRouletteData);
+            //console.log(preRouletteData);
           }
         });
       };
@@ -77,7 +77,7 @@ export const Register = () => {
             { rouletteSets: rouletteData },
             { merge: true }
           );
-          navigate('/roulette');
+          navigate('/select');
         }
       } catch (error) {
         console.log(error);
