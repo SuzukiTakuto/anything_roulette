@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { RouletteTitle, Form } from '../components/compoents';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { RouletteOfUser } from '../type';
+import { collection, getDocs, setDoc, addDoc, doc } from 'firebase/firestore';
+import { Roulette } from '../type';
 import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
@@ -13,23 +13,26 @@ export const Register = () => {
     string | number | readonly string[] | undefined
   >('名称未設定');
   const [user, setUser] = useState<User | null>();
+  const [rouletteData, setRouletteData] = useState<Roulette[]>([]);
+  const [preRouletteData, setPreRouletteData] = useState<Roulette[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
-  const rouletteData: RouletteOfUser = {
-    email: '',
-    rouletteSets: [
-      {
-        items: [''],
-        title: '',
-      },
-    ],
-  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      if (currentUser?.email) rouletteData.email = currentUser?.email;
+
+      const getRoulette = async () => {
+        const querySnapshot = await getDocs(collection(db, 'roulettes'));
+        querySnapshot.forEach((doc) => {
+          if (doc.id === currentUser?.uid) {
+            setPreRouletteData(doc.data().rouletteSets);
+            console.log(preRouletteData);
+          }
+        });
+      };
+
+      getRoulette();
     });
   }, []);
 
@@ -47,17 +50,41 @@ export const Register = () => {
 
   const addItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputRef.current) {
-      setRouletteItems([...rouletteItems, inputRef.current.value]);
+    if (inputRef.current && inputRef.current.value !== '') {
+      console.log(inputRef.current.value);
+      // 空の文字列でない場合のみ追加
+      setRouletteItems([...rouletteItems, inputRef.current?.value as String]);
+      console.log(rouletteItems);
       inputRef.current.value = '';
     }
   };
 
-  const handleRegister = () => {
-    rouletteData.rouletteSets.push({ items: rouletteItems, title: rouletteTitle });
-
-    navigate('/roulette');
+  const handleRegister = async () => {
+    const newRouletteData = [...preRouletteData, { items: rouletteItems, title: rouletteTitle }];
+    console.log(newRouletteData);
+    setRouletteData(newRouletteData);
   };
+
+  // rouletteDataの値が更新されたら実行
+  useEffect(() => {
+    console.log(rouletteData);
+    const sendData = async () => {
+      try {
+        if (user?.uid) {
+          // コレクション名'roulettes'のドキュメント名がuser.uidのドキュメントのフィールドにrouletteDataを追加
+          await setDoc(
+            doc(db, 'roulettes', user?.uid),
+            { rouletteSets: rouletteData },
+            { merge: true }
+          );
+          navigate('/roulette');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    sendData();
+  }, [rouletteData]);
 
   return (
     <>
@@ -75,7 +102,9 @@ export const Register = () => {
         <button type="submit">追加</button>
       </Form>
 
-      <button type="button">登録</button>
+      <button type="button" onClick={handleRegister}>
+        登録
+      </button>
     </>
   );
 };

@@ -6,7 +6,6 @@ export type UserContext = {
 }
 
 export type RouletteOfUser = {
-    email: string,
     rouletteSets: Roulette[]
 }
 
