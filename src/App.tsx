@@ -8,7 +8,7 @@ import { UserContext } from './type';
 import { User } from 'firebase/auth';
 import { Select } from './pages/Select';
 import { Register } from './pages/Register';
-import { Roulette } from './pages/Roulette';
+import { RoulettePage } from './pages/Roulette';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -24,7 +24,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/select" element={<Select />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/roulette" element={<Roulette />} />
+            <Route path="/roulette" element={<RoulettePage />} />
           </Routes>
         </BrowserRouter>
       </userContext.Provider>

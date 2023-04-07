@@ -20,6 +20,7 @@ export const Register = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) navigate('/signin');
       setUser(currentUser);
 
       const getRoulette = async () => {
@@ -77,7 +78,7 @@ export const Register = () => {
             { rouletteSets: rouletteData },
             { merge: true }
           );
-          navigate('/select');
+          navigate('/roulette', { state: { items: rouletteItems, title: rouletteTitle } });
         }
       } catch (error) {
         console.log(error);
