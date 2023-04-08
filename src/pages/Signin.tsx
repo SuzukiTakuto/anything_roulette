@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-import { Input, Form, Container } from '../components/compoents';
+import { Input, Form, Container, ButtonWrapper } from '../components/compoents';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +65,10 @@ export const Signin = () => {
           />
         </Input>
 
-        <button type="submit">ログイン</button>
+        <ButtonWrapper>
+          <button type="submit">ログイン</button>
+          <button onClick={() => navigate('/signup')}>新規登録ページへ</button>
+        </ButtonWrapper>
       </Form>
     </Container>
   );

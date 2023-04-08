@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-import { Input, Form, Container } from '../components/compoents';
+import { Input, Form, Container, ButtonWrapper } from '../components/compoents';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { User } from 'firebase/auth';
 import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type ValuesType = {
   email: string;
@@ -20,6 +21,7 @@ export const Signup = () => {
       password: '',
     },
   });
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>();
 
   const handleOnSubmit: SubmitHandler<ValuesType> = async (values) => {
@@ -70,7 +72,10 @@ export const Signup = () => {
             />
           </Input>
 
-          <button type="submit">登録</button>
+          <ButtonWrapper>
+            <button type="submit">登録</button>
+            <button onClick={() => navigate('/signup')}>ログインページへ</button>
+          </ButtonWrapper>
         </Form>
       )}
     </Container>
