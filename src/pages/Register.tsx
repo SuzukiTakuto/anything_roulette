@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { RouletteTitle, Form } from '../components/compoents';
+import { RouletteTitle, Form, Container } from '../components/compoents';
+import { Logout } from '../components/Logout';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { collection, getDocs, setDoc, addDoc, doc } from 'firebase/firestore';
@@ -88,7 +89,8 @@ export const Register = () => {
   }, [rouletteData]);
 
   return (
-    <>
+    <Container>
+      <Logout />
       <RouletteTitle type="text" defaultValue={rouletteTitle} onChange={handleChange} />
       <ul style={{ width: '100px', margin: 'auto' }}>
         {rouletteItems.map((item, i) => (
@@ -106,6 +108,6 @@ export const Register = () => {
       <button type="button" onClick={handleRegister}>
         登録
       </button>
-    </>
+    </Container>
   );
 };

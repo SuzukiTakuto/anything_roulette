@@ -3,6 +3,7 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { collection, getDocs, setDoc, addDoc, doc } from 'firebase/firestore';
 import { Container } from '../components/compoents';
+import { Logout } from '../components/Logout';
 import { Roulette } from '../type';
 
 export const Select = () => {
@@ -29,6 +30,7 @@ export const Select = () => {
 
   return (
     <Container>
+      <Logout />
       <ul style={{ width: '100px', margin: 'auto' }}>
         {rouletteData.map((item, i) => (
           <li key={i} style={{ textAlign: 'left' }}>

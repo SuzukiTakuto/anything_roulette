@@ -13,10 +13,8 @@ export const Input = styled.div`
 
 export const Container = styled.div`
   height: 80%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin: 40px;
+  porsition: relative;
 `;
 
 export const Form = styled.form`
@@ -56,4 +54,10 @@ export const RouletteTitle = styled.input`
   &:focus {
     outline: none;
   }
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px;
 `;
